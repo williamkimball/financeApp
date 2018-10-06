@@ -10,6 +10,11 @@ const routes = [
         component: () => import('../views/Landing')
     },
     {
+        path: '/loading',
+        name: 'loading',
+        component: () => import('../components/Callback')
+    },
+    {
         path: '/dashboard',
         name: 'dashboard',
         component: () => import('../layouts/DropletsLayout'),

@@ -310,7 +310,7 @@ export default {
           link: "logs"
         }
       ],
-      menuItems: ["Vue", "NodeJS", "Laravel"],
+      menuItems: ["Budget", "NodeJS", "Laravel"],
       searching: false,
       search: ""
     };

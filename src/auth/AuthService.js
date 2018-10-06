@@ -4,8 +4,6 @@ import EventEmitter from 'eventemitter3'
 import router from './../router'
 
 export default class AuthService {
-  authenticated = this.isAuthenticated()
-  authNotifier = new EventEmitter()
 
   constructor () {
     this.login = this.login.bind(this)
@@ -15,9 +13,9 @@ export default class AuthService {
   }
 
   auth0 = new auth0.WebAuth({
-    domain: AUTH_CONFIG.domain,
-    clientID: AUTH_CONFIG.clientId,
-    redirectUri: AUTH_CONFIG.callbackUrl,
+    domain: 'droplets.auth0.com',
+    clientID: 'AKn6SR7CRvDeJ71POE1x2Q0clLu23b5U',
+    redirectUri: 'http://localhost:8080/loading',
     responseType: 'token id_token',
     scope: 'openid'
   })
@@ -31,7 +29,7 @@ export default class AuthService {
     this.auth0.parseHash((err, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
         this.setSession(authResult)
-        router.replace('/dashboard/home')
+        router.replace('dashboard/home')
       } else if (err) {
         router.replace('/')
         console.log(err)
@@ -48,7 +46,7 @@ export default class AuthService {
     localStorage.setItem('access_token', authResult.accessToken)
     localStorage.setItem('id_token', authResult.idToken)
     localStorage.setItem('expires_at', expiresAt)
-    this.authNotifier.emit('authChange', { authenticated: true })
+    // this.authNotifier.emit('authChange', { authenticated: true })
   }
 
   logout () {
@@ -57,7 +55,7 @@ export default class AuthService {
     localStorage.removeItem('id_token')
     localStorage.removeItem('expires_at')
     this.userProfile = null
-    this.authNotifier.emit('authChange', false)
+    // this.authNotifier.emit('authChange', false)
     // navigate to the home route
     router.replace('/')
   }
