@@ -14,7 +14,7 @@
                 <v-list class="pa-0" :class="{'list-border-bottom' : miniVariant}">
                     <v-list-tile>
                         <v-list-tile-action v-if="!miniVariant">
-                            <v-icon large color="orange">invert_colors</v-icon>
+                            <v-img :src="require('@/assets/droplet.svg')"/>
                         </v-list-tile-action>
                         <v-list-tile-content v-if="!miniVariant">
                             <v-list-tile-title>
@@ -34,7 +34,7 @@
             <v-tooltip right :disabled="!miniVariant">
                 <v-toolbar flat class="transparent" dense slot="activator">
                     <v-list class="pa-0" :class="{'list-border-bottom' : miniVariant}">
-                        <v-list-tile to="/" exact>
+                        <v-list-tile to="/dashboard/home" exact>
                             <v-list-tile-action>
                                 <v-icon>home</v-icon>
                             </v-list-tile-action>
@@ -238,7 +238,7 @@ const auth = new AuthService()
 const { login, logout, authenticated, authNotifier } = auth
 
 export default {
-  name: "VuebaseLayout",
+  name: "DropletsLayout",
 
   data() {
     return {

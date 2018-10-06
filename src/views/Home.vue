@@ -1,4 +1,6 @@
 <template>
+    <body>
+    <Droplets-layout>
     <div>
         <v-toolbar
                 dense
@@ -9,7 +11,7 @@
                 flat
         >
             <v-toolbar-title class="mx-auto" slot="extension">
-                <span>Welcome to Vuebase</span>
+                <span>Welcome to Droplets</span>
                 <h2>Everything starts here.</h2>
                 <v-layout row>
                     <v-flex wrap>
@@ -38,7 +40,7 @@
                         <v-container fluid grid-list-lg>
                             <v-layout row wrap>
                                 <v-flex xs12>
-                                    <h2 class="white--text">Discover Vuebase</h2>
+                                    <h2 class="white--text">Discover Droplets</h2>
                                 </v-flex>
                             </v-layout>
                             <v-layout row wrap>
@@ -78,10 +80,14 @@
             </v-layout>
         </v-container>
     </div>
+    </Droplets-layout>
+    </body>
 </template>
 
 <script>
+    import DropletsLayout from './../layouts/DropletsLayout'
     export default {
+        name: "home",
         data() {
             return {
                 links: [

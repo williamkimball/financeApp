@@ -6,14 +6,19 @@ Vue.use(VueRouter)
 const routes = [
     {
         path: '/',
-        name: 'home',
-        component: () => import('../views/Home')
+        name: 'landing',
+        component: () => import('../views/Landing')
     },
     {
         path: '/dashboard',
         name: 'dashboard',
-        component: () => import('../views/Dashboard/Layout'),
+        component: () => import('../layouts/DropletsLayout'),
         children: [
+            {
+                path: 'home',
+                name: 'dashboard.home',
+                component: () => import('../views/Home')
+            },
             {
                 path: 'indicators',
                 name: 'dashboard.indicators',

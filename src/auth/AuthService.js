@@ -23,6 +23,7 @@ export default class AuthService {
   })
 
   login () {
+    console.log("yo")
     this.auth0.authorize()
   }
 
@@ -30,9 +31,9 @@ export default class AuthService {
     this.auth0.parseHash((err, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
         this.setSession(authResult)
-        router.replace('home')
+        router.replace('/dashboard/home')
       } else if (err) {
-        router.replace('home')
+        router.replace('/')
         console.log(err)
         alert(`Error: ${err.error}. Check the console for further details.`)
       }
