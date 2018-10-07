@@ -27,17 +27,27 @@ const routes = [
             {
                 path: 'overview',
                 name: 'dashboard.overview',
-                component: () => import('../views/Dashboard/overview')
+                component: () => import('../views/Dashboard/Overview')
             },
             {
-                path: 'backup',
-                name: 'dashboard.backup',
-                component: () => import('../views/Dashboard/Backup')
+                path: 'buckets',
+                name: 'dashboard.buckets',
+                component: () => import('../views/Dashboard/SavingsBuckets')
             },
             {
-                path: 'logs',
-                name: 'dashboard.logs',
-                component: () => import('../views/Dashboard/Logs')
+                path: 'insights',
+                name: 'dashboard.insights',
+                component: () => import('../views/Dashboard/Insights')
+            },
+            {
+                path: 'accounts',
+                name: 'dashboard.accounts',
+                component: () => import('../views/Dashboard/Accounts')
+            },
+            {
+                path: 'link_account',
+                name: 'dashboard.link_account',
+                component: () => import('../views/Dashboard/LinkAccounts')
             }
         ]
     }

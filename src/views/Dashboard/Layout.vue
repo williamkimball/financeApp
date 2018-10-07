@@ -44,7 +44,7 @@
                 tabsItems: [
                     {id: 1, title: 'Overview', link: 'overview'},
                     {id: 2, title: 'Backup', link: 'backup'},
-                    {id: 3, title: 'Logs', link: 'logs'}
+                    {id: 3, title: 'Insights', link: 'insights'}
                 ]
             }
         }

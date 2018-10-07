@@ -49,7 +49,7 @@
             <v-divider></v-divider>
 
             <v-list subheader :class="{'list-border-bottom' : miniVariant}">
-                <v-subheader>ANALYTICS</v-subheader>
+                <v-subheader>Analytics</v-subheader>
                 <template v-for="item in analyticsItems">
                     <v-tooltip right :disabled="!miniVariant">
                         <v-list-tile
@@ -72,8 +72,8 @@
             <v-divider></v-divider>
 
             <v-list subheader>
-                <v-subheader>DEVELOP</v-subheader>
-                <template v-for="item in developItems">
+                <v-subheader>Accounts</v-subheader>
+                <template v-for="item in accountItems">
                     <v-tooltip right :disabled="!miniVariant">
                         <v-list-tile
                                 :key="item.icon"
@@ -252,41 +252,26 @@ export default {
           link: "/dashboard/overview"
         },
         {
-          icon: "event",
-          title: "Events",
-          link: ""
+          icon: "remove_red_eye",
+          title: "Insights",
+          link: "/dashboard/insights"
         },
         {
-          icon: "comment",
-          title: "Notifications",
-          link: ""
+          icon: "restore_from_trash",
+          title: "Savings Buckets",
+          link: "/dashboard/buckets"
         }
       ],
-      developItems: [
+      accountItems: [
         {
-          icon: "supervisor_account",
-          title: "Authentification",
-          link: ""
+          icon: "account_balance",
+          title: "Accounts",
+          link: "/dashboard/accounts"
         },
         {
-          icon: "storage",
-          title: "Database",
-          link: ""
-        },
-        {
-          icon: "perm_media",
-          title: "Storage",
-          link: ""
-        },
-        {
-          icon: "public",
-          title: "Hosting",
-          link: ""
-        },
-        {
-          icon: "functions",
-          title: "Functions",
-          link: ""
+          icon: "account_balance_wallet",
+          title: "Link Account",
+          link: "/dashboard/link_account"
         }
       ],
       miniVariant: false,
@@ -301,16 +286,16 @@ export default {
         },
         {
           id: 2,
-          title: "Backup",
-          link: "backup"
+          title: "Budget",
+          link: "budget"
         },
         {
           id: 3,
-          title: "Logs",
-          link: "logs"
+          title: "Insights",
+          link: "insights"
         }
       ],
-      menuItems: ["Home","Budget", "Buckets", "Insights"],
+      menuItems: ["Home","Overview", "Budget", "Buckets", "Insights"],
       searching: false,
       search: ""
     };
