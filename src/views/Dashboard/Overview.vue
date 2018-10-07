@@ -1,6 +1,6 @@
 <template>
     <v-card color="white">
-        <v-card-text>Indicators</v-card-text>
+        <v-card-text>Overview</v-card-text>
     </v-card>
 </template>
 

@@ -1,7 +1,7 @@
 {
-  "name": "vuebase",
+  "name": "Droplets",
   "version": "1.2.0",
-  "description": "Vuebase, a Firebase-like theme",
+  "description": "Droplets, a Firebase-like theme",
   "author": "Nasirou Wagana <wnasirou@gmail.com>",
   "private": true,
   "scripts": {

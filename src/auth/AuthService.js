@@ -4,22 +4,21 @@ import EventEmitter from 'eventemitter3'
 import router from './../router'
 
 export default class AuthService {
-  authenticated = this.isAuthenticated()
-  authNotifier = new EventEmitter()
 
   constructor () {
     this.login = this.login.bind(this)
     this.setSession = this.setSession.bind(this)
     this.logout = this.logout.bind(this)
     this.isAuthenticated = this.isAuthenticated.bind(this)
+    this.getProfile = this.getProfile.bind(this);
   }
 
   auth0 = new auth0.WebAuth({
-    domain: AUTH_CONFIG.domain,
-    clientID: AUTH_CONFIG.clientId,
-    redirectUri: AUTH_CONFIG.callbackUrl,
+    domain: 'droplets.auth0.com',
+    clientID: 'AKn6SR7CRvDeJ71POE1x2Q0clLu23b5U',
+    redirectUri: 'http://localhost:8080/loading',
     responseType: 'token id_token',
-    scope: 'openid'
+    scope: 'openid profile'
   })
 
   login () {
@@ -30,9 +29,9 @@ export default class AuthService {
     this.auth0.parseHash((err, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
         this.setSession(authResult)
-        router.replace('home')
+        router.replace('dashboard/home')
       } else if (err) {
-        router.replace('home')
+        router.replace('/')
         console.log(err)
         alert(`Error: ${err.error}. Check the console for further details.`)
       }
@@ -47,7 +46,7 @@ export default class AuthService {
     localStorage.setItem('access_token', authResult.accessToken)
     localStorage.setItem('id_token', authResult.idToken)
     localStorage.setItem('expires_at', expiresAt)
-    this.authNotifier.emit('authChange', { authenticated: true })
+    // this.authNotifier.emit('authChange', { authenticated: true })
   }
 
   logout () {
@@ -56,7 +55,7 @@ export default class AuthService {
     localStorage.removeItem('id_token')
     localStorage.removeItem('expires_at')
     this.userProfile = null
-    this.authNotifier.emit('authChange', false)
+    // this.authNotifier.emit('authChange', false)
     // navigate to the home route
     router.replace('/')
   }
@@ -67,4 +66,29 @@ export default class AuthService {
     let expiresAt = JSON.parse(localStorage.getItem('expires_at'))
     return new Date().getTime() < expiresAt
   }
+
+// userProfile;
+
+getAccessToken() {
+    const accessToken = localStorage.getItem('access_token');
+    if (!accessToken) {
+      throw new Error('No Access Token found');
+    }
+    return accessToken;
+  }
+
+getProfile(cb) {
+  let accessToken = this.getAccessToken();
+  this.auth0.client.userInfo(accessToken, (err, profile) => {
+    if (profile) {
+      this.userProfile = profile;
+      sessionStorage.setItem('userProfile_name', this.userProfile.name)
+      sessionStorage.setItem('userProfile_id', this.userProfile.sub)
+      sessionStorage.setItem('userProfile_picture', this.userProfile.picture)
+    }
+    console.log(this.userProfile)
+
+    cb(err, profile);
+  });
+}
 }

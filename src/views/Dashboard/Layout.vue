@@ -42,7 +42,7 @@
             return {
                 tabs: null,
                 tabsItems: [
-                    {id: 1, title: 'Indicators', link: 'indicators'},
+                    {id: 1, title: 'Overview', link: 'overview'},
                     {id: 2, title: 'Backup', link: 'backup'},
                     {id: 3, title: 'Logs', link: 'logs'}
                 ]
