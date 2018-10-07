@@ -353,7 +353,6 @@ export default {
       currentMenuItem: 0,
       searching: false,
       search: ""
-      //   userProfile: store.state.user
     };
   },
 
@@ -367,13 +366,6 @@ export default {
       this.searching = true;
       setTimeout(() => document.querySelector("#search").focus(), 50);
     },
-
-    // getUserInfo(info) {
-
-    // //   let user = JSON.parse(sessionStorage.getItem(`userProfile`));
-
-    //   return user[info]
-    // },
     getMenuItem(id) {
       this.currentMenuItem = id;
     },
@@ -388,11 +380,6 @@ export default {
     logout,
     getProfile
   }
-  //   mounted() {
-  //   console.log("im running");
-  //   this.userProfile = getProfile();
-  //   console.log(this.userProfile)
-  // }
 };
 </script>
 

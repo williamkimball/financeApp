@@ -88,12 +88,8 @@ getProfile(cb) {
   this.auth0.client.userInfo(accessToken, (err, profile) => {
     if (profile) {
       this.userProfile = profile;
-      // sessionStorage.setItem('userProfile', JSON.stringify(this.userProfile))
        store.commit('addUser', this.userProfile)
     }
-    // console.log(this.userProfile)
-    return this.userProfile
-    cb(err, profile);
   });
 }
 }

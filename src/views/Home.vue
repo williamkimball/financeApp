@@ -11,7 +11,7 @@
                 flat
         >
             <v-toolbar-title class="mx-auto" slot="extension">
-                <span>Welcome to Droplets, {{this.user.name}} </span>
+                <span>Welcome to Droplets, {{this.user.given_name}} </span>
                 <h2>Everything starts here.</h2>
                 <!-- <v-layout row>
                     <v-flex wrap>
@@ -99,14 +99,10 @@ const {
 } = auth;
 import DropletsLayout from "./../layouts/DropletsLayout";
 getProfile();
-// console.log(sessionStorage.getItem("userProfile_name"));
-// console.log(sessionStorage.getItem("userProfile_picture"));
-// console.log(sessionStorage.getItem("userProfile_id"));
 
 export default {
   name: "home",
   computed: mapState(['user']),
-//   props: ['user'],
   data() {
     return {
       links: [
@@ -138,21 +134,13 @@ export default {
             "See where you're spending your money, and how much your habits are costing you.",
           color: "purple"
         }
-      ],
-    //   userProfile
+      ]
     };
   },
   methods: {
-    getProfile,
-    // getUserInfo(info) {
-
-    //   let user = JSON.parse(sessionStorage.getItem(`userProfile`));
-
-    //   return user[info]
-    // }
+    getProfile
   },
   components: {
-    //   DropletsLayout
   }
 };
 </script>
