@@ -11,7 +11,7 @@ const auth = new AuthService();
 const { login, logout, authenticated, authNotifier } = auth;
 export default {
   name: "callback",
-  props: ["auth"],
+//   props: ["auth"],
   data() {
     // this.authNotifier.on("authChange", authState => {
     //   this.authenticated = authState.authenticated;

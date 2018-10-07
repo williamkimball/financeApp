@@ -10,6 +10,7 @@ export default class AuthService {
     this.setSession = this.setSession.bind(this)
     this.logout = this.logout.bind(this)
     this.isAuthenticated = this.isAuthenticated.bind(this)
+    this.getProfile = this.getProfile.bind(this);
   }
 
   auth0 = new auth0.WebAuth({
@@ -17,11 +18,10 @@ export default class AuthService {
     clientID: 'AKn6SR7CRvDeJ71POE1x2Q0clLu23b5U',
     redirectUri: 'http://localhost:8080/loading',
     responseType: 'token id_token',
-    scope: 'openid'
+    scope: 'openid profile'
   })
 
   login () {
-    console.log("yo")
     this.auth0.authorize()
   }
 
@@ -66,4 +66,29 @@ export default class AuthService {
     let expiresAt = JSON.parse(localStorage.getItem('expires_at'))
     return new Date().getTime() < expiresAt
   }
+
+// userProfile;
+
+getAccessToken() {
+    const accessToken = localStorage.getItem('access_token');
+    if (!accessToken) {
+      throw new Error('No Access Token found');
+    }
+    return accessToken;
+  }
+
+getProfile(cb) {
+  let accessToken = this.getAccessToken();
+  this.auth0.client.userInfo(accessToken, (err, profile) => {
+    if (profile) {
+      this.userProfile = profile;
+      sessionStorage.setItem('userProfile_name', this.userProfile.name)
+      sessionStorage.setItem('userProfile_id', this.userProfile.sub)
+      sessionStorage.setItem('userProfile_picture', this.userProfile.picture)
+    }
+    console.log(this.userProfile)
+
+    cb(err, profile);
+  });
+}
 }

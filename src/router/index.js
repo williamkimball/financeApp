@@ -25,9 +25,9 @@ const routes = [
                 component: () => import('../views/Home')
             },
             {
-                path: 'indicators',
-                name: 'dashboard.indicators',
-                component: () => import('../views/Dashboard/Indicators')
+                path: 'overview',
+                name: 'dashboard.overview',
+                component: () => import('../views/Dashboard/overview')
             },
             {
                 path: 'backup',

@@ -39,12 +39,12 @@
                                 <v-icon>home</v-icon>
                             </v-list-tile-action>
                             <v-list-tile-content>
-                                <v-list-tile-title>Project Overview</v-list-tile-title>
+                                <v-list-tile-title> Home</v-list-tile-title>
                             </v-list-tile-content>
                         </v-list-tile>
                     </v-list>
                 </v-toolbar>
-                <span>Project Overview</span>
+                <span>Home</span>
             </v-tooltip>
             <v-divider></v-divider>
 
@@ -139,12 +139,12 @@
 
             <v-tooltip bottom>
                 <v-btn icon @click.stop="rightDrawer = !rightDrawer" slot="activator">
-                    <v-badge color="red" overlap>
-                        <span slot="badge">2</span>
-                        <v-icon>notifications</v-icon>
-                    </v-badge>
+                     <v-badge color="red" overlap>
+                         <!-- <span slot="badge">2</span> -->
+                        <v-icon>notifications</v-icon> 
+                    </v-badge> 
                 </v-btn>
-                <span>2 unread notifications</span>
+                <span>{{0}} unread notifications</span>
             </v-tooltip>
 
             <v-menu>
@@ -157,11 +157,11 @@
                     <v-list-tile avatar>
                         <v-list-tile-avatar>
                             <v-avatar class="primary" size="48px">
-                                <v-icon dark>person</v-icon>
+                                <img :src="getUserPic()">
                             </v-avatar>
                         </v-list-tile-avatar>
                         <v-list-tile-content>
-                            <v-list-tile-title>John Doe</v-list-tile-title>
+                            <v-list-tile-title>{{getUserName()}}</v-list-tile-title>
                             <v-list-tile-sub-title>Administrator</v-list-tile-sub-title>
                         </v-list-tile-content>
                     </v-list-tile>
@@ -233,9 +233,9 @@
 
 <script>
 import AuthService from "./../auth/AuthService.js";
-const auth = new AuthService()
+const auth = new AuthService();
 
-const { login, logout, authenticated, authNotifier } = auth
+const { login, logout, authenticated, authNotifier } = auth;
 
 export default {
   name: "DropletsLayout",
@@ -249,7 +249,7 @@ export default {
         {
           icon: "dashboard",
           title: "Dashboard",
-          link: "/dashboard/indicators"
+          link: "/dashboard/overview"
         },
         {
           icon: "event",
@@ -296,8 +296,8 @@ export default {
       tabsItems: [
         {
           id: 1,
-          title: "Indicators",
-          link: "indicators"
+          title: "Overview",
+          link: "overview"
         },
         {
           id: 2,
@@ -310,7 +310,7 @@ export default {
           link: "logs"
         }
       ],
-      menuItems: ["Budget", "NodeJS", "Laravel"],
+      menuItems: ["Home","Budget", "Buckets", "Insights"],
       searching: false,
       search: ""
     };
@@ -326,6 +326,13 @@ export default {
       this.searching = true;
       setTimeout(() => document.querySelector("#search").focus(), 50);
     },
+
+    getUserName() {
+ return sessionStorage.getItem('userProfile_name')
+  },
+    getUserPic() {
+ return sessionStorage.getItem('userProfile_picture')
+  },
 
     searchEnd() {
       this.searching = false;
