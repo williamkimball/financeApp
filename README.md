@@ -1,8 +1,6 @@
 # Droplets
 
-Welcome to Droplets : a Firebase-like theme : [https://Droplets-theme.firebaseapp.com](https://Droplets-theme.firebaseapp.com) built with [Vue](https://vuejs.org) and [Vuetify](https://vuetifyjs.com)
-
-<img src="https://firebasestorage.googleapis.com/v0/b/Droplets-theme.appspot.com/o/Droplets.png?alt=media&token=78b2c2dd-64e0-46e1-bf9b-63e319a30d87" width="425"/> <img src="https://firebasestorage.googleapis.com/v0/b/Droplets-theme.appspot.com/o/Droplets-dashboard.png?alt=media&token=d767450a-17a7-4a6f-a6d3-24caccb89377" width="425"/> 
+Welcome to Droplets : a Financial Planning Application : built with [Vue](https://vuejs.org) and [Vuetify](https://vuetifyjs.com)
 
 ## Requirements
 - [Node.js 8.9 or above (8.11.0+ recommended)](https://nodejs.org)
@@ -32,7 +30,4 @@ npm run serve
 ```
 npm run build
 ```
-
-# Integration Droplets with Laravel 5.6
-[https://github.com/nasirouwagana/laravel-Droplets](https://github.com/nasirouwagana/laravel-Droplets)
 # financeApp

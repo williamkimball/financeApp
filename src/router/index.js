@@ -35,6 +35,11 @@ const routes = [
                 component: () => import('../views/Dashboard/SavingsBuckets')
             },
             {
+                path: 'budget',
+                name: 'dashboard.budget',
+                component: () => import('../views/Dashboard/Budget')
+            },
+            {
                 path: 'insights',
                 name: 'dashboard.insights',
                 component: () => import('../views/Dashboard/Insights')

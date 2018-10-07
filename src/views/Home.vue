@@ -11,7 +11,7 @@
                 flat
         >
             <v-toolbar-title class="mx-auto" slot="extension">
-                <span>Welcome to Droplets</span>
+                <span>Welcome to Droplets, {{getUserInfo('given_name')}} </span>
                 <h2>Everything starts here.</h2>
                 <!-- <v-layout row>
                     <v-flex wrap>
@@ -135,11 +135,18 @@ export default {
             "See where you're spending your money, and how much your habits are costing you.",
           color: "purple"
         }
-      ]
+      ],
+      userProfile: auth.userProfile
     };
   },
   methods: {
-    getProfile
+    getProfile,
+    getUserInfo(info) {
+
+      let user = JSON.parse(sessionStorage.getItem(`userProfile`));
+
+      return user[info]
+    }
   },
   components: {
     //   DropletsLayout
