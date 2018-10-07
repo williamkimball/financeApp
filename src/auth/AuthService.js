@@ -2,6 +2,9 @@ import auth0 from 'auth0-js'
 import { AUTH_CONFIG } from './auth0-variables'
 import EventEmitter from 'eventemitter3'
 import router from './../router'
+import store from "./../store/index"
+import { mapState, mapMutations } from 'vuex'  
+
 
 export default class AuthService {
 
@@ -11,6 +14,7 @@ export default class AuthService {
     this.logout = this.logout.bind(this)
     this.isAuthenticated = this.isAuthenticated.bind(this)
     this.getProfile = this.getProfile.bind(this);
+    
   }
 
   auth0 = new auth0.WebAuth({
@@ -84,9 +88,10 @@ getProfile(cb) {
   this.auth0.client.userInfo(accessToken, (err, profile) => {
     if (profile) {
       this.userProfile = profile;
-      sessionStorage.setItem('userProfile', JSON.stringify(this.userProfile))
+      // sessionStorage.setItem('userProfile', JSON.stringify(this.userProfile))
+       store.commit('addUser', this.userProfile)
     }
-    console.log(this.userProfile)
+    // console.log(this.userProfile)
     return this.userProfile
     cb(err, profile);
   });

@@ -157,11 +157,11 @@
                     <v-list-tile avatar>
                         <v-list-tile-avatar>
                             <v-avatar class="primary" size="48px">
-                                <img :src="getUserInfo('picture')">
+                                <img :src="this.user.picture">
                             </v-avatar>
                         </v-list-tile-avatar>
                         <v-list-tile-content>
-                            <v-list-tile-title>{{getUserInfo('name')}}</v-list-tile-title>
+                            <v-list-tile-title>{{this.user.name}}</v-list-tile-title>
                             <v-list-tile-sub-title>{{this.title}}</v-list-tile-sub-title>
                         </v-list-tile-content>
                     </v-list-tile>
@@ -234,7 +234,9 @@
 </template>
 
 <script>
+import store from "./../store/index.js";
 import AuthService from "./../auth/AuthService.js";
+import { mapState } from "vuex";
 const auth = new AuthService();
 const {
   login,
@@ -247,6 +249,7 @@ const {
 
 export default {
   name: "DropletsLayout",
+  computed: mapState(["user"]),
 
   data() {
     return {
@@ -349,8 +352,8 @@ export default {
       ],
       currentMenuItem: 0,
       searching: false,
-      search: "",
-      userProfile: getProfile()
+      search: ""
+      //   userProfile: store.state.user
     };
   },
 
@@ -365,12 +368,12 @@ export default {
       setTimeout(() => document.querySelector("#search").focus(), 50);
     },
 
-    getUserInfo(info) {
+    // getUserInfo(info) {
 
-      let user = JSON.parse(sessionStorage.getItem(`userProfile`));
+    // //   let user = JSON.parse(sessionStorage.getItem(`userProfile`));
 
-      return user[info]
-    },
+    //   return user[info]
+    // },
     getMenuItem(id) {
       this.currentMenuItem = id;
     },
@@ -384,12 +387,12 @@ export default {
     login,
     logout,
     getProfile
-  },
-    //   mounted() {
-    //   console.log("im running");
-    //   this.userProfile = getProfile();
-    //   console.log(this.userProfile)
-    // }
+  }
+  //   mounted() {
+  //   console.log("im running");
+  //   this.userProfile = getProfile();
+  //   console.log(this.userProfile)
+  // }
 };
 </script>
 

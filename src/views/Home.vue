@@ -11,7 +11,7 @@
                 flat
         >
             <v-toolbar-title class="mx-auto" slot="extension">
-                <span>Welcome to Droplets, {{getUserInfo('given_name')}} </span>
+                <span>Welcome to Droplets, {{this.user.name}} </span>
                 <h2>Everything starts here.</h2>
                 <!-- <v-layout row>
                     <v-flex wrap>
@@ -86,6 +86,8 @@
 
 <script>
 import AuthService from "./../auth/AuthService.js";
+import store from "./../store/index.js"
+import { mapState } from 'vuex'
 const auth = new AuthService();
 
 const {
@@ -93,17 +95,18 @@ const {
   logout,
   authenticated,
   authNotifier,
-  getProfile,
-  userProfile
+  getProfile
 } = auth;
 import DropletsLayout from "./../layouts/DropletsLayout";
-// getProfile();
+getProfile();
 // console.log(sessionStorage.getItem("userProfile_name"));
 // console.log(sessionStorage.getItem("userProfile_picture"));
 // console.log(sessionStorage.getItem("userProfile_id"));
 
 export default {
   name: "home",
+  computed: mapState(['user']),
+//   props: ['user'],
   data() {
     return {
       links: [
@@ -136,17 +139,17 @@ export default {
           color: "purple"
         }
       ],
-      userProfile: auth.userProfile
+    //   userProfile
     };
   },
   methods: {
     getProfile,
-    getUserInfo(info) {
+    // getUserInfo(info) {
 
-      let user = JSON.parse(sessionStorage.getItem(`userProfile`));
+    //   let user = JSON.parse(sessionStorage.getItem(`userProfile`));
 
-      return user[info]
-    }
+    //   return user[info]
+    // }
   },
   components: {
     //   DropletsLayout
