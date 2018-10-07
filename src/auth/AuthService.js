@@ -3,7 +3,6 @@ import { AUTH_CONFIG } from './auth0-variables'
 import EventEmitter from 'eventemitter3'
 import router from './../router'
 import store from "./../store/index"
-import { mapState, mapMutations } from 'vuex'  
 
 
 export default class AuthService {

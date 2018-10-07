@@ -68,7 +68,7 @@
                                                     Learn more
                                                 </v-btn> -->
                                                 <!-- <v-spacer></v-spacer> -->
-                                                <v-btn flat color="primary">Get started</v-btn>
+                                                <v-btn flat color="primary" :to="item.link">Get started</v-btn>
                                             </v-card-actions>
                                         </v-card>
                                     </v-hover>
@@ -111,28 +111,32 @@ export default {
           title: "Dashboard",
           description:
             "Get a general overview of your finances.                              ",
-          color: "orange"
+          color: "orange",
+          link: "/dashboard/overview"
         },
         {
           id: "2",
           title: "Link Account",
           description:
             "Link an existing bank account into Droplets so you can start tracking your money more effectively.",
-          color: "teal"
+          color: "teal",
+          link: "/dashboard/link_account"
         },
         {
           id: "3",
           title: "Create a new Savings Bucket",
           description:
             "Make a new savings goal that your leftover change can go towards.",
-          color: "blue"
+          color: "blue",
+          link: "/dashboard/buckets"
         },
         {
           id: "4",
           title: "Insights",
           description:
             "See where you're spending your money, and how much your habits are costing you.",
-          color: "purple"
+          color: "purple",
+          link: "/dashboard/insights"
         }
       ]
     };
