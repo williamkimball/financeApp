@@ -2,6 +2,9 @@ import auth0 from 'auth0-js'
 import { AUTH_CONFIG } from './auth0-variables'
 import EventEmitter from 'eventemitter3'
 import router from './../router'
+import store from "./../store/index"
+import { mapState, mapMutations } from 'vuex'  
+
 
 export default class AuthService {
 
@@ -11,6 +14,7 @@ export default class AuthService {
     this.logout = this.logout.bind(this)
     this.isAuthenticated = this.isAuthenticated.bind(this)
     this.getProfile = this.getProfile.bind(this);
+    
   }
 
   auth0 = new auth0.WebAuth({
@@ -23,6 +27,7 @@ export default class AuthService {
 
   login () {
     this.auth0.authorize()
+    this.getProfile()
   }
 
   handleAuthentication () {
@@ -54,6 +59,7 @@ export default class AuthService {
     localStorage.removeItem('access_token')
     localStorage.removeItem('id_token')
     localStorage.removeItem('expires_at')
+    sessionStorage.clear();
     this.userProfile = null
     // this.authNotifier.emit('authChange', false)
     // navigate to the home route
@@ -82,12 +88,11 @@ getProfile(cb) {
   this.auth0.client.userInfo(accessToken, (err, profile) => {
     if (profile) {
       this.userProfile = profile;
-      sessionStorage.setItem('userProfile_name', this.userProfile.name)
-      sessionStorage.setItem('userProfile_id', this.userProfile.sub)
-      sessionStorage.setItem('userProfile_picture', this.userProfile.picture)
+      // sessionStorage.setItem('userProfile', JSON.stringify(this.userProfile))
+       store.commit('addUser', this.userProfile)
     }
-    console.log(this.userProfile)
-
+    // console.log(this.userProfile)
+    return this.userProfile
     cb(err, profile);
   });
 }

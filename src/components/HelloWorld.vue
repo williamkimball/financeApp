@@ -34,12 +34,14 @@
 </template>
 
 <script>
-    export default {
-        name: 'HelloWorld',
-        props: {
-            msg: String
-        }
-    }
+import { mapState } from 'vuex'
+
+export default {
+  name: 'HelloWorld',
+  computed: mapState([
+    'user'
+  ])
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

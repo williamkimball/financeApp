@@ -49,7 +49,7 @@
             <v-divider></v-divider>
 
             <v-list subheader :class="{'list-border-bottom' : miniVariant}">
-                <v-subheader>ANALYTICS</v-subheader>
+                <v-subheader>Analytics</v-subheader>
                 <template v-for="item in analyticsItems">
                     <v-tooltip right :disabled="!miniVariant">
                         <v-list-tile
@@ -72,8 +72,8 @@
             <v-divider></v-divider>
 
             <v-list subheader>
-                <v-subheader>DEVELOP</v-subheader>
-                <template v-for="item in developItems">
+                <v-subheader>Accounts</v-subheader>
+                <template v-for="item in accountItems">
                     <v-tooltip right :disabled="!miniVariant">
                         <v-list-tile
                                 :key="item.icon"
@@ -109,12 +109,12 @@
             />
             <v-menu :nudge-width="100" :class="searching ? 'hidden-xs-only' : ''">
                 <v-toolbar-title slot="activator" class="pl-2">
-                    <span>{{ menuItems[0] }}</span>
+                    <span>{{ menuItems[currentMenuItem].title }}</span>
                     <v-icon>arrow_drop_down</v-icon>
                 </v-toolbar-title>
                 <v-list light>
-                    <v-list-tile v-for="item in menuItems" :key="item" @click="">
-                        <v-list-tile-title v-text="item"></v-list-tile-title>
+                    <v-list-tile v-for="item in menuItems" :key="item.title" :to="item.link" @click="getMenuItem(item.id)">
+                        <v-list-tile-title v-text="item.title"></v-list-tile-title>
                     </v-list-tile>
                 </v-list>
             </v-menu>
@@ -140,11 +140,11 @@
             <v-tooltip bottom>
                 <v-btn icon @click.stop="rightDrawer = !rightDrawer" slot="activator">
                      <v-badge color="red" overlap>
-                         <!-- <span slot="badge">2</span> -->
+                         <span slot="badge">{{this.numOfNotifications}}</span>
                         <v-icon>notifications</v-icon> 
                     </v-badge> 
                 </v-btn>
-                <span>{{0}} unread notifications</span>
+                <span>{{this.numOfNotifications}} unread notifications</span>
             </v-tooltip>
 
             <v-menu>
@@ -157,12 +157,12 @@
                     <v-list-tile avatar>
                         <v-list-tile-avatar>
                             <v-avatar class="primary" size="48px">
-                                <img :src="getUserPic()">
+                                <img :src="this.user.picture">
                             </v-avatar>
                         </v-list-tile-avatar>
                         <v-list-tile-content>
-                            <v-list-tile-title>{{getUserName()}}</v-list-tile-title>
-                            <v-list-tile-sub-title>Administrator</v-list-tile-sub-title>
+                            <v-list-tile-title>{{this.user.name}}</v-list-tile-title>
+                            <v-list-tile-sub-title>{{this.title}}</v-list-tile-sub-title>
                         </v-list-tile-content>
                     </v-list-tile>
                     <v-divider></v-divider>
@@ -209,42 +209,65 @@
             </v-toolbar>
             <v-list subheader dense>
                 <v-subheader>All notifications</v-subheader>
-                <v-list-tile @click="">
+                 <template v-for="item in notifications">
+               <v-list-tile @click="">
                     <v-list-tile-action>
-                        <v-icon>person_add</v-icon>
+                        <v-icon>{{item.icon}}</v-icon>
                     </v-list-tile-action>
                     <v-list-tile-title>
-                        12 new users registered
+                       {{item.text}}
                     </v-list-tile-title>
                 </v-list-tile>
                 <v-divider></v-divider>
-                <v-list-tile @click="">
+                 <!-- <v-list-tile @click="">
                     <v-list-tile-action>
-                        <v-icon>data_usage</v-icon>
+                        <v-icon></v-icon>
                     </v-list-tile-action>
                     <v-list-tile-title>
                         DB overloaded 80%
-                    </v-list-tile-title>
-                </v-list-tile>
+                    </v-list-tile-title> -->
+                <!-- </v-list-tile>? -->
+                 </template>
             </v-list>
         </v-navigation-drawer>
     </v-app>
 </template>
 
 <script>
+import store from "./../store/index.js";
 import AuthService from "./../auth/AuthService.js";
+import { mapState } from "vuex";
 const auth = new AuthService();
-
-const { login, logout, authenticated, authNotifier } = auth;
+const {
+  login,
+  logout,
+  authenticated,
+  authNotifier,
+  getProfile,
+  userProfile
+} = auth;
 
 export default {
   name: "DropletsLayout",
+  computed: mapState(["user"]),
 
   data() {
     return {
       appName: process.env.VUE_APP_APP_NAME,
       drawer: true,
       fixed: false,
+      title: "Administrator",
+      numOfNotifications: 3,
+      notifications: [
+        {
+          text: "12 new users registered",
+          icon: "person_add"
+        },
+        {
+          text: "80% full",
+          icon: "data_usage"
+        }
+      ],
       analyticsItems: [
         {
           icon: "dashboard",
@@ -252,41 +275,31 @@ export default {
           link: "/dashboard/overview"
         },
         {
-          icon: "event",
-          title: "Events",
-          link: ""
+          icon: "list_alt",
+          title: "Budget",
+          link: "/dashboard/budget"
         },
         {
-          icon: "comment",
-          title: "Notifications",
-          link: ""
+          icon: "remove_red_eye",
+          title: "Insights",
+          link: "/dashboard/insights"
+        },
+        {
+          icon: "restore_from_trash",
+          title: "Savings Buckets",
+          link: "/dashboard/buckets"
         }
       ],
-      developItems: [
+      accountItems: [
         {
-          icon: "supervisor_account",
-          title: "Authentification",
-          link: ""
+          icon: "account_balance",
+          title: "Accounts",
+          link: "/dashboard/accounts"
         },
         {
-          icon: "storage",
-          title: "Database",
-          link: ""
-        },
-        {
-          icon: "perm_media",
-          title: "Storage",
-          link: ""
-        },
-        {
-          icon: "public",
-          title: "Hosting",
-          link: ""
-        },
-        {
-          icon: "functions",
-          title: "Functions",
-          link: ""
+          icon: "account_balance_wallet",
+          title: "Link Account",
+          link: "/dashboard/link_account"
         }
       ],
       miniVariant: false,
@@ -301,18 +314,46 @@ export default {
         },
         {
           id: 2,
-          title: "Backup",
-          link: "backup"
+          title: "Budget",
+          link: "budget"
         },
         {
           id: 3,
-          title: "Logs",
-          link: "logs"
+          title: "Insights",
+          link: "insights"
         }
       ],
-      menuItems: ["Home","Budget", "Buckets", "Insights"],
+      menuItems: [
+        {
+          id: 0,
+          title: "Home",
+          link: "/dashboard/home"
+        },
+        {
+          id: 1,
+          title: "Budget",
+          link: "/dashboard/budget"
+        },
+        {
+          id: 2,
+          title: "Insights",
+          link: "/dashboard/insights"
+        },
+        {
+          id: 4,
+          title: "Buckets",
+          link: "/dashboard/buckets"
+        },
+        {
+          id: 3,
+          title: "Accounts",
+          link: "/dashboard/accounts"
+        }
+      ],
+      currentMenuItem: 0,
       searching: false,
       search: ""
+      //   userProfile: store.state.user
     };
   },
 
@@ -327,12 +368,15 @@ export default {
       setTimeout(() => document.querySelector("#search").focus(), 50);
     },
 
-    getUserName() {
- return sessionStorage.getItem('userProfile_name')
-  },
-    getUserPic() {
- return sessionStorage.getItem('userProfile_picture')
-  },
+    // getUserInfo(info) {
+
+    // //   let user = JSON.parse(sessionStorage.getItem(`userProfile`));
+
+    //   return user[info]
+    // },
+    getMenuItem(id) {
+      this.currentMenuItem = id;
+    },
 
     searchEnd() {
       this.searching = false;
@@ -341,8 +385,14 @@ export default {
     },
 
     login,
-    logout
+    logout,
+    getProfile
   }
+  //   mounted() {
+  //   console.log("im running");
+  //   this.userProfile = getProfile();
+  //   console.log(this.userProfile)
+  // }
 };
 </script>
 

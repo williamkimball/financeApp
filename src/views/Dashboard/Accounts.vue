@@ -1,6 +1,6 @@
 <template>
     <v-card color="white">
-        <v-card-text>Logs</v-card-text>
+        <v-card-text>Accounts</v-card-text>
     </v-card>
 </template>
 
