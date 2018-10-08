@@ -86,9 +86,10 @@
 
 <script>
 import AuthService from "./../auth/AuthService.js";
-import store from "./../store/index.js"
-import { mapState } from 'vuex'
+import store from "./../store/index.js";
+import { mapState } from 'vuex';
 const auth = new AuthService();
+import axios from 'axios';
 
 const {
   login,
@@ -103,6 +104,11 @@ getProfile();
 export default {
   name: "home",
   computed: mapState(['user']),
+mounted () {
+    axios
+      .get('http://localhost:5001/api/User/1')
+      .then(response => (this.info = response)).then(response => console.log(response))
+  },
   data() {
     return {
       links: [
@@ -138,11 +144,13 @@ export default {
           color: "purple",
           link: "/dashboard/insights"
         }
-      ]
+      ],
+      info: ''
     };
   },
   methods: {
     getProfile
+
   },
   components: {
   }
