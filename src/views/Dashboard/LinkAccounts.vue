@@ -16,10 +16,10 @@
 <v-container >
             <v-layout row>
                 <v-flex xs12 md8 offset-md2>
-                    <v-card flat class="card--flex-toolbar" >
-                        <v-container fluid grid-list-lg justify-center="true">
-                            <v-layout row wrap justify-center="true">
-                                <v-flex xs12 sm6 md6 lg4 >
+                    <v-card flat class="card--flex-toolbar" color="transparent" >
+                        <v-container fluid grid-list-lg >
+                            <v-layout row wrap justify-center="true" >
+                                <v-flex xs12 sm6 md6 lg4  style="padding:0px;" >
                                     <v-hover>
                                         <v-card slot-scope="{ hover }" :class="`elevation-${hover ? 12 : 2}`">
                                             <v-img
@@ -28,7 +28,7 @@
                                                     height="125px"
                                                     :class="'teal'"
                                             ></v-img>
-                                                                                                                            <v-card-title primary-title>
+                                                                                                                                                        <v-card-title primary-title>
                                                 <div>
                                                     <h3 class="headline mb-0">Link Bank Account</h3>
                                                     <div>Using Plaid, you can link your financial information safely and securely to Droplets. Click the button below to get started.</div>
@@ -39,7 +39,8 @@
                                             product="transactions"
                                             v-bind="{ onSuccess }">
                                             <v-btn large color="primary">Add New Account</v-btn>
-                                        </plaid-link>                             </div>
+                                        </plaid-link>                            
+                                         </div>
                                             </v-card-title>
                                         </v-card>
                                     </v-hover>
