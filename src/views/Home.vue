@@ -106,8 +106,8 @@ export default {
   computed: mapState(['user']),
 mounted () {
     axios
-      .get('http://localhost:5001/api/User/1')
-      .then(response => (this.info = response)).then(response => console.log(response))
+      .get('http://localhost:11424/api/User')
+      .then(response => (this.info = response.data)).then(response => console.log(this.info))
   },
   data() {
     return {
@@ -145,7 +145,7 @@ mounted () {
           link: "/dashboard/insights"
         }
       ],
-      info: ''
+      users: {}
     };
   },
   methods: {
