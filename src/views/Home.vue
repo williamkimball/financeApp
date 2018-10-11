@@ -106,7 +106,7 @@ export default {
   computed: mapState(['user']),
 mounted () {
     axios
-      .get('http://localhost:11424/api/User')
+      .get('http://localhost:50297/api/Users')
       .then(response => (this.info = response.data)).then(response => console.log(this.info))
   },
   data() {
