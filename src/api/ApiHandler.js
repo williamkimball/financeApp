@@ -1,37 +1,39 @@
 import axios from 'axios';
 
-class apiCalls {
-    static getData = section => {
-      return axios.get(`http://localhost5001/api/${section}`);
-    };
+export const apiCalls = {
+  methods: {
+    getData (section) {
+      console.log("I ran")
+      return axios.get(`http://localhost:50297/api/${section}`);
+    },
   
-    static getSpecificData = (section, id) => {
-      return axios.get(`http://localhost5001/api/${section}/${id}`);
-    };
+    getSpecificData (section, id) {
+      return axios.get(`http://localhost:50297/api/${section}/${id}`);
+    },
   
-    static addData = (section, body) => {
-      return axios.post(`http://localhost5001/api/${section}`, {
+    addData (section, body) {
+      return axios.post(`http://localhost:50297/api/${section}`, {
         body: JSON.stringify(body)
       });
-    };
+    },
   
-    static deleteData = (section, id) => {
-      return fetch(`http://localhost5001/api/${section}/${id}`, {
+    deleteData (section, id) {
+      return fetch(`http://localhost:50297/api/${section}/${id}`, {
         method: "DELETE"
       });
-    };
+    },
   
-    static editData = (section, id, body) => {
-      return fetch(`http://localhost5001/api/${section}/${id}`, {
+    editData (section, id, body) {
+      return fetch(`http://localhost:50297/api/${section}/${id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json; charset=utf-8"
         },
         body: JSON.stringify(body)
       });
-    };
-  
+    }
+  }
   }
   
-  module.exports = apiCalls;
+
   

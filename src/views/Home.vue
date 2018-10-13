@@ -101,13 +101,16 @@ const {
 import DropletsLayout from "./../layouts/DropletsLayout";
 getProfile();
 
+import { apiCalls } from "./../api/ApiHandler"
+
 export default {
   name: "home",
   computed: mapState(['user']),
 mounted () {
-    axios
-      .get('http://localhost:50297/api/Users')
-      .then(response => (this.info = response.data)).then(response => console.log(this.info))
+    console.log(apiCalls.methods.getData('Users'));
+    // axios
+    //   .get('http://localhost:50297/api/Users')
+    //   .then(response => (this.info = response.data)).then(response => console.log(this.info))
   },
   data() {
     return {
@@ -153,7 +156,8 @@ mounted () {
 
   },
   components: {
-  }
+  },
+  mixins: [apiCalls]
 };
 </script>
 
