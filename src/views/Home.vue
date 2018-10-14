@@ -227,7 +227,7 @@ export default {
       users: [],
       userExists: false,
       updated: false,
-      budgetExists: false,
+      budgetExists: true,
       dialogNote: false
     };
   },

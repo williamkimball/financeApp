@@ -125,11 +125,13 @@
 </template>
 
 <script>
+import { mapState, mapGetters, mapActions } from "vuex";
+import { userInfo } from "os";
 
 export default {
   methods: {
     submitBudgetItem(categoryId, stepId) {
-      let id = sessionStorage.getItem("userId");
+      let id = this.$store.state.userInfo.userId;
       console.log("cat", categoryId);
       console.log("val", this.currentValue);
       console.log("title", this.currentTitle);
@@ -144,6 +146,7 @@ export default {
         };
         this.currentValue = 0;
         this.currentTitle = "";
+        console.log(body)
         return fetch(`http://localhost:50297/api/BudgetItems`, {
           method: "POST",
           headers: {
@@ -218,7 +221,9 @@ export default {
       }, 1000);
     }
   },
-  computed: {},
+  computed: {    ...mapState(["user", "userInfo"]),
+    ...mapGetters(["user", "userInfo", "categories"]),
+    ...mapActions(["getCategories"]),},
   data() {
     return {
       e1: 0,
