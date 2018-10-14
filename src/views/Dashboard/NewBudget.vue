@@ -1,4 +1,5 @@
 <template>
+<!-- import { parse } from 'querystring'; -->
     <v-container>
     
         <v-layout row>
@@ -8,6 +9,20 @@
                 <v-card color="white">
     
                     <v-stepper v-model="e1">
+                         <v-alert
+                        :value="alert"
+                        type="success"
+                        transition="scale-transition"
+                        >
+                        Budget Item Added Successfully
+                        </v-alert>
+                         <v-alert
+                        :value="badAlert"
+                        type="error"
+                        transition="scale-transition"
+                        >
+                        All Fields Must be Completed
+                        </v-alert>
     
                         <v-stepper-header>
     
@@ -70,9 +85,9 @@
                                     <v-flex xs12 sm10 md12>
                                     <v-card>
                                     <v-text-field
-                                    :label="steper.title"  box :value="currentValue" @input="up"></v-text-field>
+                                    box :value="currentValue" @input="up"               :rules="[rules.required, rules.nums]"></v-text-field>
                                     <v-text-field
-                                     placeholder="Name" box :value="currentTitle" @input="makeTitle"></v-text-field>
+                                    :label="steper.title" :value="currentTitle" @input="makeTitle" :rules="[rules.required]"></v-text-field>
                                     </v-card>
     
                                     </v-flex>
@@ -81,12 +96,12 @@
                                     <v-btn
                                     color="primary"
                                     small
-                                    @click="submitBudgetItem()"
+                                    @click="submitBudgetItem(steper.id, steper.step)"
                                     >
                                     <v-icon>add</v-icon>Add more items
                                     </v-btn>    
     
-                                <v-btn color="primary" @click="e1 = parseInt(steper.step) + 1; submitBudgetItem(steper.id)">
+                                <v-btn color="primary" @click="submitBudgetItem(steper.id, steper.step)">
     
                                     Continue
     
@@ -112,62 +127,111 @@
 <script>
 export default {
   methods: {
-    submitBudgetItem(categoryId) {
+    submitBudgetItem(categoryId, stepId) {
       let id = sessionStorage.getItem("userId");
-      console.log(categoryId);
-      console.log(this.currentValue);
-      console.log(this.currentTitle);
-      let body = {
-        categoryId: categoryId,
-        userId: id,
-        name: this.currentTitle,
-        price: this.currentValue
-      };
-      return fetch(`http://localhost:50297/api/BudgetItems`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json; charset=utf-8"
-        },
-        body: JSON.stringify(body)
-      }).then(data => {
-        this.currentValue = 0;
-        this.currentTitle = "";
-      });
+      console.log("cat", categoryId);
+      console.log("val", this.currentValue);
+      console.log("title", this.currentTitle);
+      let parsedStep = parseInt(stepId);
+      console.log(stepId);
+      if (this.currentValue !== 0 && this.currentTitle !== "") {
+        let body = {
+          categoryId: categoryId,
+          userId: id,
+          name: this.currentTitle,
+          price: this.currentValue
+        };
+            this.currentValue = 0;
+            this.currentTitle = "";
+        return fetch(`http://localhost:50297/api/BudgetItems`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json; charset=utf-8"
+          },
+          body: JSON.stringify(body)
+        }).then(data => {
+            this.showAlert(this.alert);
+          this.e1 = parsedStep + 1;
+        });
+      } else {
+        this.showBadAlert(this.badAlert);
+      }
     },
     up(value) {
       this.currentValue = value;
     },
     makeTitle(value) {
       this.currentTitle = value;
-      console.log(this.currentTitle)
+      console.log("title", this.currentTitle);
+    },
+    showAlert(alert) {
+      this.alert = true;
+
+      let timer = this.showAlert.timer;
+      if (timer) {
+        clearTimeout(timer);
+      }
+      this.showAlert.timer = setTimeout(() => {
+        this.alert = false;
+      }, 1700);
+
+      this.elapse = 0.35;
+      let t = this.showAlert.t;
+      if (t) {
+        clearInterval(t);
+      }
+
+      this.showAlert.t = setInterval(() => {
+        if (this.elapse === 1.5) {
+          this.elapse = 0;
+          clearInterval(this.showAlert.t);
+        } else {
+          this.elapse++;
+        }
+      }, 1000);
+    },
+    showBadAlert(alert) {
+      this.badAlert = true;
+
+      let timer = this.showBadAlert.timer;
+      if (timer) {
+        clearTimeout(timer);
+      }
+      this.showBadAlert.timer = setTimeout(() => {
+        this.badAlert = false;
+      }, 1700);
+
+      this.elapse = 0.35;
+      let t = this.showBadAlert.t;
+      if (t) {
+        clearInterval(t);
+      }
+
+      this.showBadAlert.t = setInterval(() => {
+        if (this.elapse === 1.5) {
+          this.elapse = 0;
+          clearInterval(this.showBadAlert.t);
+        } else {
+          this.elapse++;
+        }
+      }, 1000);
     }
   },
-  computed: {
-
-  },
+  computed: {},
   data() {
     return {
       e1: 0,
 
       steps: [
         {
-          id: 0,
-
-          step: "0",
-
-          title: "Budget Creation",
-
-          description:
-            "This form will take your general budget. Later on you will be able to add more specific items if you so wish."
-        },
-        {
           id: 11,
 
           step: "1",
 
-          title: "Set Income",
+          title: "Income",
 
-          description: "Please input your monthly after tax income."
+          description:
+            'Please input your monthly after tax income. If you have more than one source of income, click the "Add More Items" button to add another income source.'
         },
 
         {
@@ -177,7 +241,8 @@ export default {
 
           title: "Bills",
 
-          description: "Please put in your estimated total monthly bills."
+          description:
+            'Please put in your estimated monthly bills, click the "Add More Items" button to add another bill.'
         },
 
         {
@@ -187,7 +252,8 @@ export default {
 
           title: "Savings",
 
-          description: "Please put in your monthly savings goal."
+          description:
+            'Please put in your monthly savings goal. If you have more than one savings goal, click the "Add More Items" button.'
         },
 
         {
@@ -197,7 +263,8 @@ export default {
 
           title: "Housing",
 
-          description: "Please input your monthly mortgage or rent payment."
+          description:
+            'Please input your monthly mortgage or rent payment. If you have more than one housing expenditure, click the "Add More Items" button.'
         },
 
         {
@@ -207,7 +274,8 @@ export default {
 
           title: "Transportation",
 
-          description: "Please put in your monthly transportation spending."
+          description:
+            'Please put in your monthly transportation spending. If you have more than one transportaion expenditure, click the "Add More Items" button.'
         },
 
         {
@@ -217,7 +285,8 @@ export default {
 
           title: "Food",
 
-          description: "Please put in your monthly food budget."
+          description:
+            'Please put in your monthly food budget. If you want to specify different types of food expenditure (e.g. Gocery store, Restaurant) click the "Add More Items" button.'
         },
 
         {
@@ -227,7 +296,8 @@ export default {
 
           title: "Health",
 
-          description: "Please put in your estimated health budget."
+          description:
+            'Please put in your estimated health budget. If you want to specify different types of health expenditure (e.g. Gym membership, Dr\'s Office visit) click the "Add More Items" button.'
         },
 
         {
@@ -237,7 +307,8 @@ export default {
 
           title: "Insurance",
 
-          description: "Please put in your monthly Insurance costs."
+          description:
+            'Please put in your monthly Insurance costs. If you want to specify different types of insurance expenditure (e.g. Health, Car) click the "Add More Items" button.'
         },
 
         {
@@ -247,7 +318,8 @@ export default {
 
           title: "Debt",
 
-          description: "Please put in your monthly debt payments."
+          description:
+            'Please put in your monthly debt payments. If you want to specify different types of debt (e.g. Student Loans, Credit Card Payment) click the "Add More Items" button.'
         },
 
         {
@@ -257,7 +329,8 @@ export default {
 
           title: "Entertainment",
 
-          description: "Please put in your entertainment spending."
+          description:
+            'Please put in your entertainment spending. If you want to specify different types of entertainment spending (e.g. Netflix, Books) click the "Add More Items" button.'
         },
 
         {
@@ -272,7 +345,24 @@ export default {
         }
       ],
       currentValue: 0,
-      currentTitle: ""
+      currentTitle: "",
+      rules: {
+        required: value => {if (value !== "" && value !== 0 ) { return !!value || "Required."}
+        else return true},
+        nums: value => {
+            if (value !== 0){
+          let parsed = parseInt(value);
+          const pattern = /^-?\d*\.?\d*$/;
+          if (typeof parsed === NaN) {
+            explanation = false;
+          }
+          return pattern.test(parsed) || "Please input numbers";
+        } else if(value === 0) {return true}
+        else {return true}
+        }   
+      },
+      alert: false,
+      badAlert: false
     };
   }
 };
