@@ -17,6 +17,7 @@ export const apiCalls = {
     },
   
     deleteData (section, id) {
+      console.log(section, id)
       return axios.delete(`http://localhost:50297/api/${section}/${id}`);
     },
   
