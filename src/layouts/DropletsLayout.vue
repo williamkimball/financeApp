@@ -236,7 +236,7 @@
 <script>
 import store from "./../store/index.js";
 import AuthService from "./../auth/AuthService.js";
-import { mapState } from "vuex";
+import { mapState, mapGetters, mapActions } from "vuex";
 const auth = new AuthService();
 const {
   login,
@@ -249,8 +249,8 @@ const {
 
 export default {
   name: "DropletsLayout",
-  computed: mapState(["user"]),
-
+  computed: {...mapState(["user"]), ...mapGetters(["user"]), ...mapActions(["addUser"])},
+  beforeCreate(){    getProfile();},
   data() {
     return {
       appName: process.env.VUE_APP_APP_NAME,

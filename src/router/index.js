@@ -40,6 +40,11 @@ const routes = [
                 component: () => import('../views/Dashboard/Budget')
             },
             {
+                path: 'newBudget',
+                name: 'dashboard.newBudget',
+                component: () => import('../views/Dashboard/NewBudget')
+            },
+            {
                 path: 'insights',
                 name: 'dashboard.insights',
                 component: () => import('../views/Dashboard/Insights')

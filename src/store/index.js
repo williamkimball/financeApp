@@ -5,17 +5,24 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: { 
-        user: {}
+        user: {},
+        budgetExists: true
     },
     mutations: {
-        // Add todo mutation
+        // Add user mutation
         addUser: (state, payload) => {
-
-          // Add to existing todos
+          // Add to existing users
           state.user = payload;
+        },
+        noBudget: (state) => {
+            state.budgetExists = false
         }
     },
     getters: {
-        user: state => state.user
+        user: state => state.user,
+        budgetExists: state => state.budgetExists
+    },
+    actions: {
+        
     }
 })
