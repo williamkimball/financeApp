@@ -141,8 +141,8 @@ export default {
           name: this.currentTitle,
           price: this.currentValue
         };
-            this.currentValue = 0;
-            this.currentTitle = "";
+        this.currentValue = 0;
+        this.currentTitle = "";
         return fetch(`http://localhost:50297/api/BudgetItems`, {
           method: "POST",
           headers: {
@@ -150,7 +150,7 @@ export default {
           },
           body: JSON.stringify(body)
         }).then(data => {
-            this.showAlert(this.alert);
+          this.showAlert(this.alert);
           this.e1 = parsedStep + 1;
         });
       } else {
@@ -347,19 +347,25 @@ export default {
       currentValue: 0,
       currentTitle: "",
       rules: {
-        required: value => {if (value !== "" && value !== 0 ) { return !!value || "Required."}
-        else return true},
+        required: value => {
+          if (value !== "" && value !== 0) {
+            return !!value || "Required.";
+          } else return true;
+        },
         nums: value => {
-            if (value !== 0){
-          let parsed = parseInt(value);
-          const pattern = /^-?\d*\.?\d*$/;
-          if (typeof parsed === NaN) {
-            explanation = false;
+          if (value !== 0) {
+            let parsed = parseInt(value);
+            const pattern = /^-?\d*\.?\d*$/;
+            if (typeof parsed === NaN) {
+              explanation = false;
+            }
+            return pattern.test(parsed) || "Please input numbers";
+          } else if (value === 0) {
+            return true;
+          } else {
+            return true;
           }
-          return pattern.test(parsed) || "Please input numbers";
-        } else if(value === 0) {return true}
-        else {return true}
-        }   
+        }
       },
       alert: false,
       badAlert: false
