@@ -96,157 +96,165 @@
 </template>
 
 <script>
-    import AuthService from "./../auth/AuthService.js";
-    import store from "./../store/index.js";
-    import {
-        mapState
-    } from "vuex";
-    import axios from "axios";
-    import DropletsLayout from "./../layouts/DropletsLayout";
-    import {
-        apiCalls
-    } from "./../api/ApiHandler";
+import AuthService from "./../auth/AuthService.js";
+import store from "./../store/index.js";
+import { mapState, mapGetters, mapActions, mapMutations } from "vuex";
+import axios from "axios";
+import DropletsLayout from "./../layouts/DropletsLayout";
+import { apiCalls } from "./../api/ApiHandler";
 
-    import router from './../router'
-    
-    const auth = new AuthService();
-    
-    const {
-        login,
-        logout,
-        authenticated,
-        authNotifier,
-        getProfile
-    } = auth;
-    
-    // getProfile();
-    
-    
-    export default {
-        name: "home",
-        computed: {
-            ...mapState(["user"])
-        },
-        beforeCreate() {
-            getProfile();
-        },
-        created() {},
-        updated() {
-            fetch("http://localhost:50297/api/Users")
-                .then(response => response.json())
-                .then(data => {
-                    this.users = data;
-                    return data
-                })
-                .then(data => {
-                    let sub = this.$store.state.user.sub
-                    if (this.updated === false) {
-                        sub = sub.substring(sub.indexOf("|") + 1);
-                        this.users.forEach(user => {
-                            // console.log(user)
-                            if (user.idString === sub) {
-                                this.userExists = true;
-                                this.currentUser = user
-                                sessionStorage.setItem('userId', user.userId)
-                            }
-                        });
-                        if (!this.currentUser) {
-                            console.log("no such user exists")
-                            this.userExists = false;
-                        }
-                        console.log(this.currentUser)
-                        if (this.currentUser && this.currentUser.budgetItems.length !== 0) {
-                            console.log(this.currentUser.budgetItems.length)
-                            this.budgetExists = true;
-                        } else {
-                            this.budgetExists = false
-                        }
-    
-                        if (this.userExists === false) {
-                            console.log("First time loging in.");
-                            store.commit("noBudget");
-                            const newUser = {
-                                firstName: this.user.given_name,
-                                idString: sub
-                            };
-                            fetch(`http://localhost:50297/api/Users`, {
-                                method: "POST",
-                                headers: {
-                                    "Content-Type": "application/json; charset=utf-8"
-                                },
-                                body: JSON.stringify(newUser)
-                            }).then(ex => {this.dialogNote = true});
-                            this.dialogNote = true
-                        }
-                        if (this.userExists === false || this.budgetExists === false){
-                            this.dialogNote = true
-                        }
-                        this.updated = true;
-                    }
-                });
-        },
-        data() {
-            return {
-                links: [{
-                        id: "1",
-                        title: "Dashboard",
-                        description: "Get a general overview of your finances.                              ",
-                        color: "orange",
-                        link: "/dashboard/overview"
-                    },
-                    {
-                        id: "2",
-                        title: "Link Account",
-                        description: "Link an existing bank account into Droplets so you can start tracking your money more effectively.",
-                        color: "teal",
-                        link: "/dashboard/link_account"
-                    },
-                    {
-                        id: "3",
-                        title: "Create a new Savings Bucket",
-                        description: "Make a new savings goal that your leftover change can go towards.",
-                        color: "blue",
-                        link: "/dashboard/buckets"
-                    },
-                    {
-                        id: "4",
-                        title: "Insights",
-                        description: "See where you're spending your money, and how much your habits are costing you.",
-                        color: "purple",
-                        link: "/dashboard/insights"
-                    }
-                ],
-                users: [],
-                userExists: false,
-                updated: false,
-                budgetExists: false,
-                dialogNote: false
-            };
-        },
-        methods: {
-            getProfile,
-            toggleDialogNote() {
-                this.dialogNote = false;
-                router.replace('/dashboard/newBudget')
+import router from "./../router";
+
+const auth = new AuthService();
+
+const { login, logout, authenticated, authNotifier, getProfile } = auth;
+
+// getProfile();
+
+export default {
+  name: "home",
+  computed: {
+    ...mapState(["user"]),
+    ...mapGetters(["categories"])
+  },
+  beforeCreate() {
+    getProfile();
+  },
+  created() {},
+  updated() {
+    fetch("http://localhost:50297/api/Users")
+      .then(response => response.json())
+      .then(data => {
+        this.users = data;
+        return data;
+      })
+      .then(data => {
+        let sub = this.$store.state.user.sub;
+        if (this.updated === false) {
+          sub = sub.substring(sub.indexOf("|") + 1);
+          this.users.forEach(user => {
+            // console.log(user)
+            if (user.idString === sub) {
+              this.userExists = true;
+              this.currentUser = user;
+              store.commit("setUser", user);
+              // sessionStorage.setItem('userId', user.userId)
             }
+          });
+          if (!this.currentUser) {
+            console.log("no such user exists");
+            this.userExists = false;
+          }
+          console.log(this.currentUser);
+          if (this.currentUser && this.currentUser.budgetItems.length !== 0) {
+            console.log(this.currentUser.budgetItems.length);
+            this.budgetExists = true;
+          } else {
+            this.budgetExists = false;
+          }
+
+          if (this.userExists === false) {
+            console.log("First time loging in.");
+            store.commit("noBudget");
+            const newUser = {
+              firstName: this.user.given_name,
+              idString: sub
+            };
+            fetch(`http://localhost:50297/api/Users`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json; charset=utf-8"
+              },
+              body: JSON.stringify(newUser)
+            }).then(ex => {
+              this.dialogNote = true;
+            });
+            this.dialogNote = true;
+          }
+          if (this.userExists === false || this.budgetExists === false) {
+            this.dialogNote = true;
+          }
+          this.updated = true;
+        }
+      })
+      .then(data => {
+        fetch("http://localhost:50297/api/Categories")
+          .then(response => response.json())
+          .then(categories => {
+            return categories;
+          })
+          .then(categories => {
+            store.commit("setCategories", categories);
+          });
+      });
+  },
+  data() {
+    return {
+      links: [
+        {
+          id: "1",
+          title: "Dashboard",
+          description:
+            "Get a general overview of your finances.                              ",
+          color: "orange",
+          link: "/dashboard/overview"
         },
-        components: {},
-        mixins: [apiCalls]
+        {
+          id: "2",
+          title: "Link Account",
+          description:
+            "Link an existing bank account into Droplets so you can start tracking your money more effectively.",
+          color: "teal",
+          link: "/dashboard/link_account"
+        },
+        {
+          id: "3",
+          title: "Create a new Savings Bucket",
+          description:
+            "Make a new savings goal that your leftover change can go towards.",
+          color: "blue",
+          link: "/dashboard/buckets"
+        },
+        {
+          id: "4",
+          title: "Insights",
+          description:
+            "See where you're spending your money, and how much your habits are costing you.",
+          color: "purple",
+          link: "/dashboard/insights"
+        }
+      ],
+      users: [],
+      userExists: false,
+      updated: false,
+      budgetExists: false,
+      dialogNote: false
     };
+  },
+  methods: {
+    getProfile,
+    toggleDialogNote() {
+      this.dialogNote = false;
+      router.replace("/dashboard/newBudget");
+    }
+  },
+  components: {},
+  mixins: [apiCalls]
+};
 </script>
 
 
 <style scoped>
-    .outine-2 {
-        border: 2px solid white;
-    }
-    
-    .card--flex-toolbar {
-        margin-top: -124px;
-    }
-    
-    .learn-more-btn {
-        text-transform: initial;
-        text-decoration: underline;
-    }
+.outine-2 {
+  border: 2px solid white;
+}
+
+.card--flex-toolbar {
+  margin-top: -124px;
+}
+
+.learn-more-btn {
+  text-transform: initial;
+  text-decoration: underline;
+}
 </style>

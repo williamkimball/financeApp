@@ -6,6 +6,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
     state: { 
         user: {},
+        userInfo: {},
+        categories: [],
         budgetExists: true
     },
     mutations: {
@@ -14,13 +16,21 @@ export default new Vuex.Store({
           // Add to existing users
           state.user = payload;
         },
+        setUser: (state, payload) => {
+            state.userInfo = payload
+        },
+        setCategories: (state, payload) => {
+            state.categories = payload
+        },
         noBudget: (state) => {
             state.budgetExists = false
         }
     },
     getters: {
         user: state => state.user,
-        budgetExists: state => state.budgetExists
+        budgetExists: state => state.budgetExists,
+        userInfo: state => state.userInfo,
+        categories: state => state.categories,
     },
     actions: {
         

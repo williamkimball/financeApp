@@ -58,6 +58,8 @@ export default class AuthService {
     localStorage.removeItem('access_token')
     localStorage.removeItem('id_token')
     localStorage.removeItem('expires_at')
+    localStorage.removeItem('userId')
+
     sessionStorage.clear();
     this.userProfile = null
     // this.authNotifier.emit('authChange', false)
