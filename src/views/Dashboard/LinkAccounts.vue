@@ -39,31 +39,23 @@
 </template>
 
 <script>
-    import PlaidLink from "vue-plaid-link";
-    import store from "./../../store/index.js";
-    import AuthService from "./../../auth/AuthService.js";
-    import {
-        mapState
-    } from 'vuex'
-    const auth = new AuthService();
-    
-    const {
-        login,
-        logout,
-        authenticated,
-        authNotifier,
-        getProfile
-    } = auth;
-    getProfile();
-    export default {
-        computed: mapState(['user']),
-        components: {
-            PlaidLink
-        },
-        methods: {
-            onSuccess(token) {
-                console.log(token);
-            }
-        }
-    };
+import PlaidLink from "vue-plaid-link";
+import store from "./../../store/index.js";
+import AuthService from "./../../auth/AuthService.js";
+import { mapState } from "vuex";
+const auth = new AuthService();
+
+const { login, logout, authenticated, authNotifier, getProfile } = auth;
+getProfile();
+export default {
+  computed: mapState(["user"]),
+  components: {
+    PlaidLink
+  },
+  methods: {
+    onSuccess(token) {
+      console.log(token);
+    }
+  }
+};
 </script>

@@ -14,7 +14,7 @@
           <v-card-text>
             <v-container grid-list-md>
               <v-layout wrap>
-                <p>Enter the name and dollar amount of your budget item.</p>
+                <p>Enter the name and amount of your budget item.</p>
                 <v-flex xs12 sm6 md4>
                   <v-text-field v-model="editedItem.name" label="Title"></v-text-field>
                 </v-flex>
@@ -78,6 +78,13 @@
                         </v-icon>
 
             </template>
+             <template slot="footer">
+              <td><strong>Totals</strong></td>
+              <td>${{getFilteredTotal(item, item.name)}}</td>
+              <td>asdf</td> 
+              <td>asdf</td>
+                    <v-spacer></v-spacer> 
+            </template>
           </v-data-table>          
         </v-card>
       </v-expansion-panel-content>
@@ -89,7 +96,7 @@
 import store from "./../../store/index.js";
 import { mapState, mapGetters, mapActions } from "vuex";
 import { userInfo } from "os";
-import { apiCalls } from '../../api/ApiHandler.js';
+import { apiCalls } from "../../api/ApiHandler.js";
 export default {
   computed: {
     ...mapState(["user", "userInfo"]),
@@ -126,36 +133,37 @@ export default {
       categoryId: 0,
       name: "",
       price: 0,
-      userId: 0,
+      userId: 0
     },
     defaultItem: {
       categoryId: 0,
       name: "",
       price: 0,
-      userId: 0,
+      userId: 0
     },
     panel: [],
     asd: "",
     categoryList: [],
     budgetItemList: [],
-    selectedCat: 0,
+    selectedCat: 0
   }),
   watch: {
     dialog(val) {
       val || this.close();
     }
   },
-  beforeMount(){
-            fetch("http://localhost:50297/api/Categories")
-          .then(response => response.json())
-          .then(categories => {
-            return categories;
-          })
-          .then(categories => {
-            store.commit("setCategories", categories);
-          }).then(data => {
-    this.setCategories();
-          });
+  beforeMount() {
+    fetch("http://localhost:50297/api/Categories")
+      .then(response => response.json())
+      .then(categories => {
+        return categories;
+      })
+      .then(categories => {
+        store.commit("setCategories", categories);
+      })
+      .then(data => {
+        this.setCategories();
+      });
   },
   created() {
     this.setCategories();
@@ -167,7 +175,7 @@ export default {
     initialize() {},
 
     editItem(item) {
-      console.log(item)
+      console.log(item);
       this.editedIndex = this.budgetItemList.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialog = true;
@@ -177,7 +185,7 @@ export default {
       const itemId = item.budgetItemId;
 
       confirm("Are you sure you want to delete this item?") &&
-      axios.delete(`http://localhost:50297/api/BudgetItems/${itemId}`);
+        axios.delete(`http://localhost:50297/api/BudgetItems/${itemId}`);
     },
 
     close() {
@@ -201,24 +209,41 @@ export default {
         budgetItem => budgetItem.categoryId === item.categoryId
       );
     },
+    getFilteredTotal(item, row) {
+      let it = this.budgetItemList.filter(
+        budgetItem => budgetItem.categoryId === item.categoryId
+      );
+      let total = 0;
+      it.forEach(element => {
+        total += element.price
+      });
+      console.log(row, total)
+      return total
+      ;
+    },
     save() {
       if (this.editedIndex > -1) {
         Object.assign(this.budgetItemList[this.editedIndex], this.editedItem);
-        axios.put(`http://localhost:50297/api/BudgetItems/${this.editedItem.budgetItemId}`, this.editedItem)
+        axios.put(
+          `http://localhost:50297/api/BudgetItems/${
+            this.editedItem.budgetItemId
+          }`,
+          this.editedItem
+        );
       } else {
-        console.log(this.selectedCat)
+        console.log(this.selectedCat);
         this.editedItem.categoryId = this.selectedCat;
-        this.editedItem.userId = this.$store.state.userInfo.userId
+        this.editedItem.userId = this.$store.state.userInfo.userId;
         this.editedItem.price = parseInt(this.editedItem.price);
-        console.log(this.editedItem)
+        console.log(this.editedItem);
         this.budgetItemList.push(this.editedItem);
-        fetch('http://localhost:50297/api/BudgetItems', {
-        method: "POST", // *GET, POST, PUT, DELETE, etc.
-        headers: {
-            "Content-Type": "application/json; charset=utf-8",
-        },
-        body: JSON.stringify(this.editedItem), // body data type must match "Content-Type" header
-    })
+        fetch("http://localhost:50297/api/BudgetItems", {
+          method: "POST", // *GET, POST, PUT, DELETE, etc.
+          headers: {
+            "Content-Type": "application/json; charset=utf-8"
+          },
+          body: JSON.stringify(this.editedItem) // body data type must match "Content-Type" header
+        });
       }
       this.close();
     },

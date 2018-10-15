@@ -132,11 +132,9 @@ export default {
   methods: {
     submitBudgetItem(categoryId, stepId) {
       let id = this.$store.state.userInfo.userId;
-      console.log("cat", categoryId);
-      console.log("val", this.currentValue);
-      console.log("title", this.currentTitle);
+
       let parsedStep = parseInt(stepId);
-      console.log(stepId);
+
       if (this.currentValue !== 0 && this.currentTitle !== "") {
         let body = {
           categoryId: categoryId,
@@ -146,7 +144,7 @@ export default {
         };
         this.currentValue = 0;
         this.currentTitle = "";
-        console.log(body)
+
         return fetch(`http://localhost:50297/api/BudgetItems`, {
           method: "POST",
           headers: {
@@ -166,7 +164,6 @@ export default {
     },
     makeTitle(value) {
       this.currentTitle = value;
-      console.log("title", this.currentTitle);
     },
     showAlert(alert) {
       this.alert = true;
@@ -221,9 +218,11 @@ export default {
       }, 1000);
     }
   },
-  computed: {    ...mapState(["user", "userInfo"]),
+  computed: {
+    ...mapState(["user", "userInfo"]),
     ...mapGetters(["user", "userInfo", "categories"]),
-    ...mapActions(["getCategories"]),},
+    ...mapActions(["getCategories"])
+  },
   data() {
     return {
       e1: 0,
