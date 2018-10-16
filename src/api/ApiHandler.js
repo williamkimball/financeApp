@@ -52,10 +52,10 @@ export const apiCalls = {
         "Content-Type": "application/json; charset=utf-8"
       },
       body: data
-    }).then(response => {
-      console.log(response.responseText)
-      return results;
-    });
+    }).then(function(response) {
+      return response.json();
+    })
+ 
     // var xhr = new XMLHttpRequest();
     
     // xhr.addEventListener("readystatechange", function () {

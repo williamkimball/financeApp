@@ -24,7 +24,7 @@ export default new Vuex.Store({
             state.categories = payload
         },
         setAccounts: (state, payload) => {
-            state.Accounts = payload
+            state.accounts = payload
         },
         noBudget: (state) => {
             state.budgetExists = false

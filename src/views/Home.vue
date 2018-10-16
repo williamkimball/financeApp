@@ -123,9 +123,9 @@ export default {
   },
   created() {
     // console.log("pd:", plaidData.data)
-    apiCalls.getTransactions().then(response => {
-      console.log(response)
-    })
+    apiCalls.getTransactions().then(function(myJson) {
+      store.commit('setAccounts', myJson.accounts)
+    });
     
   },
   updated() {
