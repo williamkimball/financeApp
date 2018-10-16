@@ -122,8 +122,7 @@ export default {
     getProfile();
   },
   created() {
-    // console.log("pd:", plaidData.data)
-    apiCalls.getTransactions().then(function(myJson) {
+    apiCalls.getTransactions(plaidData(), "transactions").then(function(myJson) {
       store.commit('setAccounts', myJson.accounts)
     });
     

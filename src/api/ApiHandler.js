@@ -38,15 +38,22 @@ export const apiCalls = {
     });
   },
 
-  getTransactions(data) {
-    var data = JSON.stringify({
-      "access_token": "access-sandbox-913c6392-87de-4889-abe3-9cb25c7463be",
-      "secret": "6df1781bcc8b64c765c0c95adcba76",
-      "client_id": "5bb9386199b2670011f77142",
-      "start_date": "2000-01-01",
-      "end_date": "2018-09-04"
-    });
-    return fetch(`http://localhost:6060/transactions/get`, {
+  getTransactions(data, type) {
+
+    data = JSON.stringify(data)
+
+    let getType = ""
+
+    if (type === "transactions"){
+      getType = "transactions/get"
+      data = data.slice(0, -1); 
+      data += ', "start_date": "2000-01-01", "end_date": "2018-09-04"}'
+      console.log(data)
+    }
+
+
+
+    return fetch(`http://localhost:6060/${getType}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json; charset=utf-8"
