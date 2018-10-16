@@ -104,6 +104,7 @@ import DropletsLayout from "./../layouts/DropletsLayout";
 import { apiCalls } from "./../api/ApiHandler";
 
 import router from "./../router";
+import plaidData from "./../api/plaid"
 
 const auth = new AuthService();
 
@@ -120,7 +121,13 @@ export default {
   beforeCreate() {
     getProfile();
   },
-  created() {},
+  created() {
+    // console.log("pd:", plaidData.data)
+    apiCalls.getTransactions().then(response => {
+      console.log(response)
+    })
+    
+  },
   updated() {
     fetch("http://localhost:50297/api/Users")
       .then(response => response.json())
@@ -144,10 +151,8 @@ export default {
           if (!this.currentUser) {
             console.log("no such user exists");
             this.userExists = false;
-          }
-          console.log(this.currentUser);
+          } 
           if (this.currentUser && this.currentUser.budgetItems.length !== 0) {
-            console.log(this.currentUser.budgetItems.length);
             this.budgetExists = true;
           } else {
             this.budgetExists = false;

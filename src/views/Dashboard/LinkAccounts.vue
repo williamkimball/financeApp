@@ -40,21 +40,41 @@
 
 <script>
 import PlaidLink from "vue-plaid-link";
-import store from "./../../store/index.js";
 import AuthService from "./../../auth/AuthService.js";
-import { mapState } from "vuex";
+import store from "./../../store/index.js";
+import { mapState, mapGetters, mapActions } from "vuex";
+import { userInfo } from "os";
+import { apiCalls } from "../../api/ApiHandler.js";
 const auth = new AuthService();
 
 const { login, logout, authenticated, authNotifier, getProfile } = auth;
 getProfile();
 export default {
-  computed: mapState(["user"]),
+  computed: {
+    ...mapState(["user", "userInfo"]),
+    ...mapGetters(["user", "userInfo", "categories"]),
+    ...mapActions(["getCategories"])
+  },
   components: {
     PlaidLink
   },
   methods: {
     onSuccess(token) {
       console.log(token);
+        let user = this.$store.state.userInfo.userId;
+        let newAccount = {
+            access_Token: token,
+            userId: user
+        }
+        console.log(newAccount)
+        fetch("http://localhost:50297/api/Accounts", {
+          method: "POST", // *GET, POST, PUT, DELETE, etc.
+          headers: {
+            "Content-Type": "application/json; charset=utf-8"
+          },
+          body: JSON.stringify(newAccount) // body data type must match "Content-Type" header
+        });
+
     }
   }
 };

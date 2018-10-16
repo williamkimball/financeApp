@@ -184,6 +184,8 @@
   } = auth;
   
   export default {
+    mounted(){
+    },
     data() {
       authNotifier.on('authChange', authState => {
         this.authenticated = authState.authenticated

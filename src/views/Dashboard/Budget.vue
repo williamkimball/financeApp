@@ -217,9 +217,8 @@ export default {
       it.forEach(element => {
         total += element.price
       });
-      console.log(row, total)
-      return total
-      ;
+      // console.log(row, total)
+      return total;
     },
     save() {
       if (this.editedIndex > -1) {
