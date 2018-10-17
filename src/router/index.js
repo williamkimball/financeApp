@@ -55,6 +55,12 @@ const routes = [
                 component: () => import('../views/Dashboard/Accounts')
             },
             {
+                path: 'accountView',
+                name: 'dashboard.accountView',
+                component: () => import('../views/Dashboard/AccountView'),
+                props: (route) => ({ query: route.query.q }) 
+            },
+            {
                 path: 'link_account',
                 name: 'dashboard.link_account',
                 component: () => import('../views/Dashboard/LinkAccounts')

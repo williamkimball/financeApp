@@ -1,5 +1,13 @@
-<template>
+<template> 
   <div>
+        <v-toolbar dense color="primary" dark extended extension-height="300" flat>
+            <v-toolbar-title class="mx-auto" slot="extension">
+                <span>Here's an overview of your</span>
+                <h2>Budget</h2>
+                <span>Click on a row to expand it and see more details.</span>
+                <!-- <span>Drople</span> -->
+            </v-toolbar-title>
+        </v-toolbar>
     <div class="d-flex  mb-3" >
       <v-btn v-if="this.panel.length !== 0" center xs12 sm4 color="primary" @click="none">Collapse All</v-btn>
     </div>
@@ -215,7 +223,7 @@ export default {
       );
       let total = 0;
       it.forEach(element => {
-        total += element.price
+        total += element.price;
       });
       // console.log(row, total)
       return total;

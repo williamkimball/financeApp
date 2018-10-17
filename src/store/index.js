@@ -9,7 +9,9 @@ export default new Vuex.Store({
         userInfo: {},
         categories: [],
         budgetExists: true,
-        accounts: []
+        accounts: {},
+        acctById: {},
+        transByCat: {}
     },
     mutations: {
         // Add user mutation
@@ -26,6 +28,12 @@ export default new Vuex.Store({
         setAccounts: (state, payload) => {
             state.accounts = payload
         },
+        setAccountById: (state, payload) => {
+            state.acctById = payload
+        },
+        setTransByCat: (state, payload) => {
+            state.transByCat = payload
+        },
         noBudget: (state) => {
             state.budgetExists = false
         }
@@ -35,7 +43,9 @@ export default new Vuex.Store({
         budgetExists: state => state.budgetExists,
         userInfo: state => state.userInfo,
         categories: state => state.categories,
-        accounts: state => state.accounts
+        accounts: state => state.accounts,
+        acctById: state => state.acctById,
+        transByCat: state => state.transByCat,
     },
     actions: {
         

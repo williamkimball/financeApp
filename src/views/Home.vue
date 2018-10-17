@@ -123,7 +123,30 @@ export default {
   },
   created() {
     apiCalls.getTransactions(plaidData(), "transactions").then(function(myJson) {
-      store.commit('setAccounts', myJson.accounts)
+      console.log(myJson)
+      store.commit('setAccounts', myJson)
+      
+        function groupBy(list, keyGetter) {
+            const map = new Map();
+            list.forEach((item) => {
+                const key = keyGetter(item);
+                const collection = map.get(key);
+                if (!collection) {
+                    map.set(key, [item]);
+                } else {
+                    collection.push(item);
+                }
+            });
+            return map;
+          }
+
+
+      const grouped = groupBy(myJson.transactions, transaction => transaction.account_id);
+      store.commit('setAccountById', grouped)
+      const groupByCat = groupBy(myJson.transactions, transaction => transaction.category_id);
+      store.commit('setTransByCat', groupByCat)
+
+      console.log(groupByCat)
     });
     
   },
@@ -240,7 +263,8 @@ export default {
     toggleDialogNote() {
       this.dialogNote = false;
       router.replace("/dashboard/newBudget");
-    }
+    },
+
   },
   components: {},
   mixins: [apiCalls]
