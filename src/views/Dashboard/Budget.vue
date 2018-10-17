@@ -66,10 +66,10 @@
             :key="item.categoryId"
           >
             <template slot="items" slot-scope="props">
-              <td  >{{ props.item.name }}</td>
-              <td  >${{ props.item.price }}</td>
-              <td  >$100</td>
-              <td  >-$100</td>
+              <td>{{ props.item.name }}</td>
+              <td>${{ props.item.price }}</td>
+              <td>$100</td>
+              <td>-$100</td>
               <!-- <td class="text-xs-right" :key="budgetItem.categoryId">{{ budgetItem.diff }}</td> -->
                         <v-icon
                           small
@@ -89,8 +89,8 @@
              <template slot="footer">
               <td><strong>Totals</strong></td>
               <td>${{getFilteredTotal(item, item.name)}}</td>
-              <td>asdf</td> 
-              <td>asdf</td>
+              <td>${{getFilteredTotal(item, item.name)}}</td> 
+              <td>${{getFilteredTotal(item, item.name)} - }</td>
                     <v-spacer></v-spacer> 
             </template>
           </v-data-table>          
@@ -153,6 +153,7 @@ export default {
     asd: "",
     categoryList: [],
     budgetItemList: [],
+    actualItemList: [],
     selectedCat: 0
   }),
   watch: {
