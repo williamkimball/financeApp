@@ -6,7 +6,7 @@
                 <!-- <span>Drople</span> -->
             </v-toolbar-title>
         </v-toolbar>
- <!-- <v-container> -->
+<!-- <v-container> -->
                 <v-layout row>
                     <v-flex xs12 md8 offset-md2>
                         <v-card flat class="card--flex-toolbar" color="transparent">
@@ -20,8 +20,7 @@
                                     <v-flex xs12 sm6 md6 lg4 v-for="item in this.$store.state.accounts.accounts" :key="item.account_id">
                                         <v-hover>
                                             <v-card slot-scope="{ hover }" :class="`elevation-${hover ? 12 : 2}`">
-                                                <!-- <v-img src="" aspect-ratio="2.75" height="125px" :class="dark"></v-img>
-     -->
+                                                <!-- <v-img src="" aspect-ratio="2.75" height="125px" :class="dark"></v-img>-->
                                                 <v-card-title primary-title>
                                                     <div>
                                                         <h3 class="headline mb-0">{{item.name}}</h3>

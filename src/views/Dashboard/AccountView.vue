@@ -67,7 +67,8 @@ export default {
         { text: "Amount", value: "amount" },
         { text: "Category", value: "category" }
       ],
-      transactions: []
+      debits: [],
+      credits: []
     };
   }
 };

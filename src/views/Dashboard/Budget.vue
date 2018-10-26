@@ -32,7 +32,15 @@
                   vertical
                 ></v-divider>
                 <v-flex xs12 sm6 md4>
-                  <v-text-field v-model="editedItem.price" label="Amount"></v-text-field>
+                  <v-text-field v-model="editedItem.price" label="Budgeted Amount"></v-text-field>
+                </v-flex>
+                <!-- <v-divider
+                  class="mx-2"
+                  inset
+                  vertical
+                ></v-divider> -->
+                <v-flex xs12 sm6 md4>
+                  <v-text-field v-model="editedItem.current" label="Actual Amount"></v-text-field>
                 </v-flex>
               </v-layout>
             </v-container>
@@ -68,9 +76,8 @@
             <template slot="items" slot-scope="props">
               <td>{{ props.item.name }}</td>
               <td>${{ props.item.price }}</td>
-              <td>$100</td>
-              <td>-$100</td>
-              <!-- <td class="text-xs-right" :key="budgetItem.categoryId">{{ budgetItem.diff }}</td> -->
+              <td>${{ props.item.current}}</td>
+              <td>${{ props.item.price - props.item.current}}</td>
                         <v-icon
                           small
                           class="mr-2"
@@ -84,15 +91,14 @@
                         >
                           delete
                         </v-icon>
-
             </template>
-             <template slot="footer">
-              <td><strong>Totals</strong></td>
-              <td>${{getFilteredTotal(item, item.name)}}</td>
-              <td>${{getFilteredTotal(item, item.name)}}</td> 
-              <td>${{getFilteredTotal(item, item.name)} - }</td>
-                    <v-spacer></v-spacer> 
-            </template>
+              <template slot="footer">
+                <td><strong>Totals</strong></td>
+                <td>${{getFilteredTotal(item, item.name, "budget")}}</td>
+                <td>${{getFilteredTotal(item, item.name, "actual")}}</td> 
+                <td>${{getFilteredTotal(item, item.name, "budget") - getFilteredTotal(item, item.name, "actual")}}</td>
+                <v-spacer></v-spacer> 
+              </template>
           </v-data-table>          
         </v-card>
       </v-expansion-panel-content>
@@ -131,7 +137,7 @@ export default {
         value: "actual"
       },
       {
-        text: "Difference",
+        text: "Remaining",
         value: "diff"
       },
       { text: "Actions", value: "name", sortable: false }
@@ -153,7 +159,7 @@ export default {
     asd: "",
     categoryList: [],
     budgetItemList: [],
-    actualItemList: [],
+    actualItemList: [0, 200, 400],
     selectedCat: 0
   }),
   watch: {
@@ -218,16 +224,24 @@ export default {
         budgetItem => budgetItem.categoryId === item.categoryId
       );
     },
-    getFilteredTotal(item, row) {
+    getFilteredTotal(item, row, catagory) {
       let it = this.budgetItemList.filter(
         budgetItem => budgetItem.categoryId === item.categoryId
       );
       let total = 0;
+      if (catagory === "budget") {
       it.forEach(element => {
         total += element.price;
       });
       // console.log(row, total)
       return total;
+      } else if (catagory === "actual"){
+              it.forEach(element => {
+        total += element.current;
+      });
+      // console.log(row, total)
+      return total;
+      }
     },
     save() {
       if (this.editedIndex > -1) {
