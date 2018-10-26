@@ -1,8 +1,8 @@
 {
   "name": "Droplets",
-  "version": "1.2.0",
-  "description": "Droplets, a Firebase-like theme",
-  "author": "Nasirou Wagana <wnasirou@gmail.com>",
+  "version": "1.0.0",
+  "description": "Droplets",
+  "author": "William Kimball",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",

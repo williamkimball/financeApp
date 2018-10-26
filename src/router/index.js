@@ -40,6 +40,11 @@ const routes = [
                 component: () => import('../views/Dashboard/Budget')
             },
             {
+                path: 'newBudget',
+                name: 'dashboard.newBudget',
+                component: () => import('../views/Dashboard/NewBudget')
+            },
+            {
                 path: 'insights',
                 name: 'dashboard.insights',
                 component: () => import('../views/Dashboard/Insights')
@@ -48,6 +53,12 @@ const routes = [
                 path: 'accounts',
                 name: 'dashboard.accounts',
                 component: () => import('../views/Dashboard/Accounts')
+            },
+            {
+                path: 'accountView',
+                name: 'dashboard.accountView',
+                component: () => import('../views/Dashboard/AccountView'),
+                props: (route) => ({ query: route.query.q }) 
             },
             {
                 path: 'link_account',
