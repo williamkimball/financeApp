@@ -3,7 +3,6 @@ import { AUTH_CONFIG } from './auth0-variables'
 import EventEmitter from 'eventemitter3'
 import router from './../router'
 import store from "./../store/index"
-import { mapState, mapMutations } from 'vuex'  
 
 
 export default class AuthService {
@@ -59,6 +58,8 @@ export default class AuthService {
     localStorage.removeItem('access_token')
     localStorage.removeItem('id_token')
     localStorage.removeItem('expires_at')
+    localStorage.removeItem('userId')
+
     sessionStorage.clear();
     this.userProfile = null
     // this.authNotifier.emit('authChange', false)
@@ -88,12 +89,8 @@ getProfile(cb) {
   this.auth0.client.userInfo(accessToken, (err, profile) => {
     if (profile) {
       this.userProfile = profile;
-      // sessionStorage.setItem('userProfile', JSON.stringify(this.userProfile))
        store.commit('addUser', this.userProfile)
     }
-    // console.log(this.userProfile)
-    return this.userProfile
-    cb(err, profile);
   });
 }
 }
